@@ -1,3 +1,4 @@
-/.idea/
-torrust-api-lib.iml
+.idea
+torrust-index-api-lib.iml
+node_modules
 lib
