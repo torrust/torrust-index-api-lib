@@ -1,16 +1,12 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "CommonJS",
+    "moduleResolution": "node",
     "declaration": true,
+    "sourceMap": true,
     "outDir": "lib",
+    "lib":["DOM", "ES2015", "ES5", "ES6"],
     "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "exclude": [
-    "node_modules",
-    "lib"
-  ]
+    "noImplicitAny": true,
+  }
 }
