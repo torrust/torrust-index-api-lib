@@ -27,8 +27,10 @@ export default new class {
     }
 
     readToken() {
+        if (typeof window === 'undefined') return;
+
         // Read user json from local storage
-        const userJson = localStorage.getItem(LOCAL_STORAGE_USER_KEY) ?? "";
+        const userJson = window.localStorage.getItem(LOCAL_STORAGE_USER_KEY) ?? "";
 
         const user = User.fromJson(userJson);
 
@@ -38,9 +40,11 @@ export default new class {
     }
 
     clearToken() {
+        if (typeof window === 'undefined') return;
+
         this.userToken = undefined;
 
-        localStorage.removeItem(LOCAL_STORAGE_USER_KEY)
+        window.localStorage.removeItem(LOCAL_STORAGE_USER_KEY)
     }
 
     setToken() {
