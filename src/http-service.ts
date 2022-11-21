@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-import {User} from "./types/user";
+import {User} from "torrust-index-types-lib";
 
 const LOCAL_STORAGE_USER_KEY = "torrust_user";
 

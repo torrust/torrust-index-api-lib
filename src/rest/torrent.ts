@@ -1,5 +1,5 @@
 import HttpService from "../http-service";
-import {Torrent} from "../types/torrent";
+import {Torrent} from "torrust-index-types-lib";
 
 type GetTorrentResponse = {
     data: Torrent;

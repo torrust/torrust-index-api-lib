@@ -1,1 +1,5 @@
+.idea
+torrust-index-api-lib.iml
+tests
+.env*
 src
