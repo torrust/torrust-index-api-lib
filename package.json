@@ -5,9 +5,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "develop": "webpack-dev-server --mode development",
     "build": "tsc",
-    "prepublishtsc": "npm run build"
+    "prepublish": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
