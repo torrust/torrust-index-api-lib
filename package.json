@@ -1,13 +1,13 @@
 {
   "name": "torrust-index-api-lib",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Contains API functions for the Torrust project.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "develop": "webpack-dev-server --mode development",
     "build": "tsc",
-    "prepare": "npm run build"
+    "prepublishtsc": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
