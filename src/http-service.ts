@@ -56,6 +56,12 @@ export default new class {
         return axios.get<T>(url);
     }
 
+    getBlob(url: string): Promise<AxiosResponse<Blob>> {
+        this.setToken();
+
+        return axios.get(url, { responseType: 'blob' });
+    }
+
     delete<T>(url: string, data: Object): Promise<AxiosResponse<T>> {
         this.setToken();
 

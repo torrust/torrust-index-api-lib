@@ -22,9 +22,20 @@ type DeleteTorrentResponse = {
 }
 
 export async function deleteTorrent(apiBaseUrl: string, torrentId: number): Promise<boolean> {
-    return await HttpService.delete<DeleteTorrentResponse>(`/torrent/${torrentId}`, {})
+    return await HttpService.delete<DeleteTorrentResponse>(`${apiBaseUrl}/torrent/${torrentId}`, {})
         .then((_res) => {
             return Promise.resolve(true);
+        })
+        .catch((err) => {
+            return Promise.reject(err);
+        });
+}
+
+export async function downloadTorrent(apiBaseUrl: string, torrentId: number): Promise<Blob> {
+    return await HttpService.getBlob(`${apiBaseUrl}/torrent/download/${torrentId}`)
+        .then((res) => {
+            let blob = new Blob([res.data]);
+            return Promise.resolve(blob);
         })
         .catch((err) => {
             return Promise.reject(err);
