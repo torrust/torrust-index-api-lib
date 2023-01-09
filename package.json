@@ -1,18 +1,23 @@
 {
   "name": "torrust-index-api-lib",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Contains API functions for the Torrust project.",
   "repository": "https://github.com/torrust/torrust-index-types-lib",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "npm run lintfix && tsc",
     "prepare": "npm run build",
-    "prepublish": "tsc"
+    "prepublish": "npm run build",
+    "lint": "eslint --ext \".ts,.js,.vue\" --ignore-path .gitignore .",
+    "lintfix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .gitignore ."
   },
   "devDependencies": {
-    "typescript": "^4.9.3"
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
+    "eslint": "^8.31.0",
+    "typescript": "^4.9.4"
   },
   "dependencies": {
     "torrust-index-types-lib": "^0.1.3"

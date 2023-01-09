@@ -1,7 +1,7 @@
-import {PublicSettings, Settings} from "torrust-index-types-lib"
-import {IRestResource} from "../restResource"
-import {Rest} from "../rest"
-import {fetchGet, fetchPost} from "../../../utils/fetch"
+import {PublicSettings, Settings} from "torrust-index-types-lib";
+import {IRestResource} from "../restResource";
+import {Rest} from "../rest";
+import {fetchGet, fetchPost} from "../../../utils/fetch";
 
 type GetSettingsResponse = {
     data: Settings
@@ -12,10 +12,10 @@ type GetPublicSettingsResponse = {
 }
 
 export class SettingsResource implements IRestResource {
-    client: Rest
+    client: Rest;
 
     constructor(client: Rest) {
-        this.client = client
+        this.client = client;
     }
 
     public async getSettings(): Promise<Settings> {
@@ -24,11 +24,11 @@ export class SettingsResource implements IRestResource {
             { "Authorization": `Bearer ${this.client.authToken}` }
         )
             .then((res) => {
-                return Promise.resolve(res.data)
+                return Promise.resolve(res.data);
             })
             .catch((err) => {
-                return Promise.reject(err)
-            })
+                return Promise.reject(err);
+            });
     }
 
     public async updateSettings(settings: Settings): Promise<Settings> {
@@ -38,11 +38,11 @@ export class SettingsResource implements IRestResource {
             { "Authorization": `Bearer ${this.client.authToken}` }
         )
             .then((res) => {
-                return Promise.resolve(res.data)
+                return Promise.resolve(res.data);
             })
             .catch((err) => {
-                return Promise.reject(err)
-            })
+                return Promise.reject(err);
+            });
     }
 
     public async getPublicSettings(): Promise<PublicSettings> {
@@ -50,10 +50,10 @@ export class SettingsResource implements IRestResource {
             `${this.client.apiBaseUrl}/settings/public`
         )
             .then((res) => {
-                return Promise.resolve(res.data)
+                return Promise.resolve(res.data);
             })
             .catch((err) => {
-                return Promise.reject(err)
-            })
+                return Promise.reject(err);
+            });
     }
 }

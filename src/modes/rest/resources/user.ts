@@ -1,6 +1,6 @@
-import {Rest} from "../rest"
-import {IRestResource} from "../restResource"
-import {fetchPost} from "../../../utils/fetch"
+import {Rest} from "../rest";
+import {IRestResource} from "../restResource";
+import {fetchPost} from "../../../utils/fetch";
 import {User} from "torrust-index-types-lib";
 
 type LoginUserParams = {
@@ -19,11 +19,15 @@ type RegisterUserParams = {
     confirm_password: string
 }
 
+type Token = {
+    token: string
+}
+
 export class UserResource implements IRestResource {
-    client: Rest
+    client: Rest;
 
     constructor(client: Rest) {
-        this.client = client
+        this.client = client;
     }
 
     async loginUser(params: LoginUserParams): Promise<User> {
@@ -33,13 +37,13 @@ export class UserResource implements IRestResource {
         )
             .then((res) => {
                 // Update auth token.
-                this.client.setToken(res.data.token)
+                this.client.setToken(res.data.token);
 
-                return Promise.resolve(res.data)
+                return Promise.resolve(res.data);
             })
             .catch((err) => {
-                return Promise.reject(err)
-            })
+                return Promise.reject(err);
+            });
     }
 
     async registerUser(params: RegisterUserParams): Promise<boolean> {
@@ -48,10 +52,27 @@ export class UserResource implements IRestResource {
             params
         )
             .then(() => {
-                return Promise.resolve(true)
+                return Promise.resolve(true);
             })
             .catch((err) => {
-                return Promise.reject(err)
+                return Promise.reject(err);
+            });
+    }
+
+    async renewToken(): Promise<User> {
+        return await fetchPost<Token, LoginUserResponse>(
+            `${this.client.apiBaseUrl}/user/token/renew`,
+            { token: this.client.authToken ?? "" }
+        )
+            .then((res) => {
+                // Update auth token.
+                this.client.setToken(res.data.token);
+
+                return Promise.resolve(res.data);
             })
+            .catch((err) => {
+                console.error(err);
+                return Promise.reject(err);
+            });
     }
 }
