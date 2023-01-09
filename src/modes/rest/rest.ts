@@ -6,51 +6,51 @@ import {UserResource} from "./resources/user";
 const LOCAL_STORAGE_TOKEN_KEY = "torrust_token";
 
 export class Rest {
-    public apiBaseUrl: string;
-    public authToken?: string;
-    public category: CategoryResource;
-    public settings: SettingsResource;
-    public torrent: TorrentResource;
-    public user: UserResource;
+  public apiBaseUrl: string;
+  public authToken?: string;
+  public category: CategoryResource;
+  public settings: SettingsResource;
+  public torrent: TorrentResource;
+  public user: UserResource;
 
-    constructor(apiBaseUrl: string) {
-        this.apiBaseUrl = apiBaseUrl;
+  constructor(apiBaseUrl: string) {
+    this.apiBaseUrl = apiBaseUrl;
 
-        this.getToken();
+    this.getToken();
 
-        this.category = new CategoryResource(this);
-        this.settings = new SettingsResource(this);
-        this.torrent = new TorrentResource(this);
-        this.user = new UserResource(this);
-    }
+    this.category = new CategoryResource(this);
+    this.settings = new SettingsResource(this);
+    this.torrent = new TorrentResource(this);
+    this.user = new UserResource(this);
+  }
 
-    public getToken() {
+  public getToken() {
     // Should only work in a browser, not in Node.
-        if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return;
 
-        // Read user json from local storage.
-        const authToken = window.localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+    // Read user json from local storage.
+    const authToken = window.localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
 
-        if (authToken) {
-            this.setToken(authToken);
-        }
+    if (authToken) {
+      this.setToken(authToken);
     }
+  }
 
-    public setToken(authToken: string) {
+  public setToken(authToken: string) {
     // Should only work in a browser, not in Node.
-        if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return;
 
-        this.authToken = authToken;
+    this.authToken = authToken;
 
-        window.localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, authToken);
-    }
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, authToken);
+  }
 
-    public deleteToken() {
+  public deleteToken() {
     // Should only work in a browser, not in Node.
-        if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return;
 
-        this.authToken = undefined;
+    this.authToken = undefined;
 
-        window.localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
-    }
+    window.localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+  }
 }

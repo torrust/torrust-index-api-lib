@@ -50,94 +50,94 @@ type UploadTorrentResponseData = {
 }
 
 export class TorrentResource implements IRestResource {
-    client: Rest;
+  client: Rest;
 
-    constructor(client: Rest) {
-        this.client = client;
-    }
+  constructor(client: Rest) {
+    this.client = client;
+  }
 
-    async getTorrent(torrentId: number): Promise<Torrent> {
-        return await fetchGet<GetTorrentResponse>(
-            `${this.client.apiBaseUrl}/torrent/${torrentId}`
-        )
-            .then((res) => {
-                return Promise.resolve(res.data);
-            })
-            .catch((err) => {
-                return Promise.reject(err);
-            });
-    }
+  async getTorrent(torrentId: number): Promise<Torrent> {
+    return await fetchGet<GetTorrentResponse>(
+      `${this.client.apiBaseUrl}/torrent/${torrentId}`
+    )
+      .then((res) => {
+        return Promise.resolve(res.data);
+      })
+      .catch((err) => {
+        return Promise.reject(err);
+      });
+  }
 
-    async getTorrents(params: GetTorrentsParams): Promise<GetTorrentsResponseData> {
-        return await fetchGet<GetTorrentsResponse>(
-            `${this.client.apiBaseUrl}/torrents?page_size=${params.pageSize}&page=${params.page - 1}&sort=${params.sorting}${ params.categories ? "&categories=" + params.categories.join(",") : ""}${params.searchQuery ? "&search=" + params.searchQuery : ""}`
-        )
-            .then((res) => {
-                return Promise.resolve(res.data);
-            })
-            .catch((err) => {
-                return Promise.reject(err);
-            });
-    }
+  async getTorrents(params: GetTorrentsParams): Promise<GetTorrentsResponseData> {
+    return await fetchGet<GetTorrentsResponse>(
+      `${this.client.apiBaseUrl}/torrents?page_size=${params.pageSize}&page=${params.page - 1}&sort=${params.sorting}${ params.categories ? "&categories=" + params.categories.join(",") : ""}${params.searchQuery ? "&search=" + params.searchQuery : ""}`
+    )
+      .then((res) => {
+        return Promise.resolve(res.data);
+      })
+      .catch((err) => {
+        return Promise.reject(err);
+      });
+  }
 
-    async deleteTorrent(torrentId: number): Promise<boolean> {
-        return await fetchDelete<any, DeleteTorrentResponse>(
-            `${this.client.apiBaseUrl}/torrent/${torrentId}`,
-            {},
-            { "Authorization": `Bearer ${this.client.authToken}` }
-        )
-            .then((_res) => {
-                return Promise.resolve(true);
-            })
-            .catch((err) => {
-                return Promise.reject(err);
-            });
-    }
+  async deleteTorrent(torrentId: number): Promise<boolean> {
+    return await fetchDelete<any, DeleteTorrentResponse>(
+      `${this.client.apiBaseUrl}/torrent/${torrentId}`,
+      {},
+      { "Authorization": `Bearer ${this.client.authToken}` }
+    )
+      .then((_res) => {
+        return Promise.resolve(true);
+      })
+      .catch((err) => {
+        return Promise.reject(err);
+      });
+  }
 
-    async updateTorrent(torrent: Torrent): Promise<Torrent> {
-        return await fetchPut<Torrent, UpdateTorrentResponse>(
-            `${this.client.apiBaseUrl}/torrent/${torrent.torrent_id}`,
-            torrent,
-            { "Authorization": `Bearer ${this.client.authToken}` }
-        )
-            .then((res) => {
-                return Promise.resolve(res.data);
-            })
-            .catch((err) => {
-                return Promise.reject(err);
-            });
-    }
+  async updateTorrent(torrent: Torrent): Promise<Torrent> {
+    return await fetchPut<Torrent, UpdateTorrentResponse>(
+      `${this.client.apiBaseUrl}/torrent/${torrent.torrent_id}`,
+      torrent,
+      { "Authorization": `Bearer ${this.client.authToken}` }
+    )
+      .then((res) => {
+        return Promise.resolve(res.data);
+      })
+      .catch((err) => {
+        return Promise.reject(err);
+      });
+  }
 
-    async uploadTorrent(params: UploadTorrentParams): Promise<number> {
-        const formData = new FormData();
+  async uploadTorrent(params: UploadTorrentParams): Promise<number> {
+    const formData = new FormData();
 
-        formData.append("title", params.title);
-        formData.append("description", params.description);
-        formData.append("category", params.category);
-        formData.append("torrent", params.file);
+    formData.append("title", params.title);
+    formData.append("description", params.description);
+    formData.append("category", params.category);
+    formData.append("torrent", params.file);
 
-        return await fetchPost<FormData, UploadTorrentResponse>(
-            `${this.client.apiBaseUrl}/torrent/upload`,
-            formData,
-            { "Authorization": `Bearer ${this.client.authToken}` }
-        )
-            .then((res) => {
-                return Promise.resolve(res.data.torrent_id);
-            })
-            .catch((err) => {
-                return Promise.reject(err.response?.data?.error ?? err);
-            });
-    }
+    return await fetchPost<FormData, UploadTorrentResponse>(
+      `${this.client.apiBaseUrl}/torrent/upload`,
+      formData,
+      { "Authorization": `Bearer ${this.client.authToken}` }
+    )
+      .then((res) => {
+        return Promise.resolve(res.data.torrent_id);
+      })
+      .catch((err) => {
+        return Promise.reject(err.response?.data?.error ?? err);
+      });
+  }
 
-    async downloadTorrent(torrentId: number): Promise<Blob> {
-        return await fetchGetBlob(
-            `${this.client.apiBaseUrl}/torrent/download/${torrentId}`
-        )
-            .then((blob) => {
-                return Promise.resolve(blob);
-            })
-            .catch((err) => {
-                return Promise.reject(err);
-            });
-    }
+  async downloadTorrent(torrentId: number): Promise<Blob> {
+    return await fetchGetBlob(
+      `${this.client.apiBaseUrl}/torrent/download/${torrentId}`
+    )
+      .then((blob) => {
+        return Promise.resolve(blob);
+      })
+      .catch((err) => {
+        return Promise.reject(err);
+      });
+  }
 }
