@@ -24,55 +24,58 @@ type Token = {
 }
 
 export class UserResource implements IRestResource {
-  client: Rest;
+    client: Rest;
 
-  constructor(client: Rest) {
-    this.client = client;
-  }
+    constructor(client: Rest) {
+        this.client = client;
+    }
 
-  async loginUser(params: LoginUserParams): Promise<User> {
-    return await fetchPost<LoginUserParams, LoginUserResponse>(
-      `${this.client.apiBaseUrl}/user/login`,
-      params
-    )
-      .then((res) => {
-        // Update auth token.
-        this.client.setToken(res.data.token);
+    async loginUser(params: LoginUserParams): Promise<User> {
+        return await fetchPost<LoginUserResponse>(
+            `${this.client.apiBaseUrl}/user/login`,
+            JSON.stringify(params),
+            { "Content-Type": "application/json" }
+        )
+            .then((res) => {
+                // Update auth token.
+                this.client.setToken(res.data.token);
 
-        return Promise.resolve(res.data);
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      });
-  }
+                return Promise.resolve(res.data);
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    }
 
-  async registerUser(params: RegisterUserParams): Promise<boolean> {
-    return await fetchPost<RegisterUserParams, any>(
-      `${this.client.apiBaseUrl}/user/register`,
-      params
-    )
-      .then(() => {
-        return Promise.resolve(true);
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      });
-  }
+    async registerUser(params: RegisterUserParams): Promise<boolean> {
+        return await fetchPost<any>(
+            `${this.client.apiBaseUrl}/user/register`,
+            JSON.stringify(params),
+            { "Content-Type": "application/json" }
+        )
+            .then(() => {
+                return Promise.resolve(true);
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    }
 
-  async renewToken(): Promise<User> {
-    return await fetchPost<Token, LoginUserResponse>(
-      `${this.client.apiBaseUrl}/user/token/renew`,
-      { token: this.client.authToken ?? "" }
-    )
-      .then((res) => {
-        // Update auth token.
-        this.client.setToken(res.data.token);
+    async renewToken(): Promise<User> {
+        return await fetchPost<LoginUserResponse>(
+            `${this.client.apiBaseUrl}/user/token/renew`,
+            JSON.stringify({ token: this.client.authToken ?? "" }),
+            { "Content-Type": "application/json"}
+        )
+            .then((res) => {
+                // Update auth token.
+                this.client.setToken(res.data.token);
 
-        return Promise.resolve(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-        return Promise.reject(err);
-      });
-  }
+                return Promise.resolve(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+                return Promise.reject(err);
+            });
+    }
 }

@@ -12,48 +12,48 @@ type GetPublicSettingsResponse = {
 }
 
 export class SettingsResource implements IRestResource {
-  client: Rest;
+    client: Rest;
 
-  constructor(client: Rest) {
-    this.client = client;
-  }
+    constructor(client: Rest) {
+        this.client = client;
+    }
 
-  public async getSettings(): Promise<Settings> {
-    return await fetchGet<GetSettingsResponse>(
-      `${this.client.apiBaseUrl}/settings`,
-      { "Authorization": `Bearer ${this.client.authToken}` }
-    )
-      .then((res) => {
-        return Promise.resolve(res.data);
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      });
-  }
+    public async getSettings(): Promise<Settings> {
+        return await fetchGet<GetSettingsResponse>(
+            `${this.client.apiBaseUrl}/settings`,
+            { "Authorization": `Bearer ${this.client.authToken}` }
+        )
+            .then((res) => {
+                return Promise.resolve(res.data);
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    }
 
-  public async updateSettings(settings: Settings): Promise<Settings> {
-    return await fetchPost<Settings, GetSettingsResponse>(
-      `${this.client.apiBaseUrl}/settings`,
-      settings,
-      { "Authorization": `Bearer ${this.client.authToken}` }
-    )
-      .then((res) => {
-        return Promise.resolve(res.data);
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      });
-  }
+    public async updateSettings(settings: Settings): Promise<Settings> {
+        return await fetchPost<GetSettingsResponse>(
+            `${this.client.apiBaseUrl}/settings`,
+            JSON.stringify(settings),
+            { "Authorization": `Bearer ${this.client.authToken}`, "Content-Type": "application/json" }
+        )
+            .then((res) => {
+                return Promise.resolve(res.data);
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    }
 
-  public async getPublicSettings(): Promise<PublicSettings> {
-    return await fetchGet<GetPublicSettingsResponse>(
-      `${this.client.apiBaseUrl}/settings/public`
-    )
-      .then((res) => {
-        return Promise.resolve(res.data);
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      });
-  }
+    public async getPublicSettings(): Promise<PublicSettings> {
+        return await fetchGet<GetPublicSettingsResponse>(
+            `${this.client.apiBaseUrl}/settings/public`
+        )
+            .then((res) => {
+                return Promise.resolve(res.data);
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    }
 }
