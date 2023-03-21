@@ -145,7 +145,7 @@ export class TorrentResource implements IRestResource {
         const headers = this.client.authToken ? { "Authorization": `Bearer ${this.client.authToken}` } : undefined;
 
         return await fetchGetBlob(
-            `${this.client.apiBaseUrl}/proxy/image?url=${encodeURIComponent(url)}`,
+            `${this.client.apiBaseUrl}/proxy/image/${encodeURIComponent(url)}`,
             headers
         )
             .then((blob) => {
