@@ -1,4 +1,10 @@
-A simple TypeScript/ES6 library that contains API calls used by the Torrust Index project.
+# Torrust Index Application Interface
+
+A simple TypeScript/ES6 library that contains API calls used by the [Torrust Index](https://github.com/torrust/torrust-index) project.
+
+* [Torrust Index Backend](https://github.com/torrust/torrust-index-backend) is our reference implementation of this interface.
+* [Torrust Index Frontend](https://github.com/torrust/torrust-index-frontend) is our reference web-application that consumes this interface.
+
 
 ## Install
 
