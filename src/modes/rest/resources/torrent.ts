@@ -1,4 +1,4 @@
-import {Torrent, TorrentCompact} from "torrust-index-types-lib";
+import {Torrent, TorrentTag, TorrentCompact} from "torrust-index-types-lib";
 import {Rest} from "../rest";
 import {IRestResource} from "../restResource";
 import {fetchDelete, fetchGet, fetchGetBlob, fetchPost, fetchPut} from "../../../utils/fetch";
@@ -38,6 +38,7 @@ type UploadTorrentParams = {
     title: string
     category: string
     description: string
+    tags: Array<number>
     file: any
 }
 
@@ -47,6 +48,10 @@ type UploadTorrentResponse = {
 
 type UploadTorrentResponseData = {
     torrent_id: number
+}
+
+type GetTagsResponse = {
+    data: Array<TorrentTag>
 }
 
 export class TorrentResource implements IRestResource {
@@ -114,6 +119,7 @@ export class TorrentResource implements IRestResource {
         formData.append("title", params.title);
         formData.append("description", params.description);
         formData.append("category", params.category);
+        formData.append("tags", JSON.stringify(params.tags));
         formData.append("torrent", params.file);
 
         return await fetchPost<UploadTorrentResponse>(
@@ -150,6 +156,18 @@ export class TorrentResource implements IRestResource {
         )
             .then((blob) => {
                 return Promise.resolve(blob);
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    }
+
+    async getTags(): Promise<Array<TorrentTag>> {
+        return await fetchGet<GetTagsResponse>(
+            `${this.client.apiBaseUrl}/tags`
+        )
+            .then((res) => {
+                return Promise.resolve(res.data);
             })
             .catch((err) => {
                 return Promise.reject(err);
