@@ -12,6 +12,7 @@ type GetTorrentsParams = {
     page: number
     sorting: string
     categories?: Array<string>
+    tags?: Array<string>
     searchQuery?: string
 }
 
@@ -28,6 +29,12 @@ type DeleteTorrentResponse = {
     data: {
         torrent_id: number
     }
+}
+
+type UpdateTorrentParams = {
+    title?: string
+    description?: string
+    tags?: number[]
 }
 
 type UpdateTorrentResponse = {
@@ -50,10 +57,6 @@ type UploadTorrentResponseData = {
     torrent_id: number
 }
 
-type GetTagsResponse = {
-    data: Array<TorrentTag>
-}
-
 export class TorrentResource implements IRestResource {
     client: Rest;
 
@@ -61,9 +64,9 @@ export class TorrentResource implements IRestResource {
         this.client = client;
     }
 
-    async getTorrent(torrentId: number): Promise<Torrent> {
+    async getTorrent(infoHash: string): Promise<Torrent> {
         return await fetchGet<GetTorrentResponse>(
-            `${this.client.apiBaseUrl}/torrent/${torrentId}`
+            `${this.client.apiBaseUrl}/torrent/${infoHash}`
         )
             .then((res) => {
                 return Promise.resolve(res.data);
@@ -75,7 +78,7 @@ export class TorrentResource implements IRestResource {
 
     async getTorrents(params: GetTorrentsParams): Promise<GetTorrentsResponseData> {
         return await fetchGet<GetTorrentsResponse>(
-            `${this.client.apiBaseUrl}/torrents?page_size=${params.pageSize}&page=${params.page - 1}&sort=${params.sorting}${ params.categories ? "&categories=" + params.categories.join(",") : ""}${params.searchQuery ? "&search=" + params.searchQuery : ""}`
+            `${this.client.apiBaseUrl}/torrents?page_size=${params.pageSize}&page=${params.page - 1}&sort=${params.sorting}${ params.categories ? "&categories=" + params.categories.join(",") : ""}${ params.tags ? "&tags=" + params.tags.join(",") : ""}${params.searchQuery ? "&search=" + params.searchQuery : ""}`
         )
             .then((res) => {
                 return Promise.resolve(res.data);
@@ -85,9 +88,9 @@ export class TorrentResource implements IRestResource {
             });
     }
 
-    async deleteTorrent(torrentId: number): Promise<boolean> {
+    async deleteTorrent(infoHash: string): Promise<boolean> {
         return await fetchDelete<any, DeleteTorrentResponse>(
-            `${this.client.apiBaseUrl}/torrent/${torrentId}`,
+            `${this.client.apiBaseUrl}/torrent/${infoHash}`,
             {},
             { "Authorization": `Bearer ${this.client.authToken}` }
         )
@@ -99,10 +102,10 @@ export class TorrentResource implements IRestResource {
             });
     }
 
-    async updateTorrent(torrent: Torrent): Promise<Torrent> {
-        return await fetchPut<Torrent, UpdateTorrentResponse>(
-            `${this.client.apiBaseUrl}/torrent/${torrent.torrent_id}`,
-            torrent,
+    async updateTorrent(infoHash: string, params: UpdateTorrentParams): Promise<Torrent> {
+        return await fetchPut<UpdateTorrentParams, UpdateTorrentResponse>(
+            `${this.client.apiBaseUrl}/torrent/${infoHash}`,
+            params,
             { "Authorization": `Bearer ${this.client.authToken}`, "Content-Type": "application/json" }
         )
             .then((res) => {
@@ -135,9 +138,9 @@ export class TorrentResource implements IRestResource {
             });
     }
 
-    async downloadTorrent(torrentId: number): Promise<Blob> {
+    async downloadTorrent(infoHash: number): Promise<Blob> {
         return await fetchGetBlob(
-            `${this.client.apiBaseUrl}/torrent/download/${torrentId}`
+            `${this.client.apiBaseUrl}/torrent/download/${infoHash}`
         )
             .then((blob) => {
                 return Promise.resolve(blob);
@@ -156,18 +159,6 @@ export class TorrentResource implements IRestResource {
         )
             .then((blob) => {
                 return Promise.resolve(blob);
-            })
-            .catch((err) => {
-                return Promise.reject(err);
-            });
-    }
-
-    async getTags(): Promise<Array<TorrentTag>> {
-        return await fetchGet<GetTagsResponse>(
-            `${this.client.apiBaseUrl}/tags`
-        )
-            .then((res) => {
-                return Promise.resolve(res.data);
             })
             .catch((err) => {
                 return Promise.reject(err);

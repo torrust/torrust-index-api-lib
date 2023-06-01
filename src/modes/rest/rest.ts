@@ -2,6 +2,7 @@ import {CategoryResource} from "./resources/category";
 import {SettingsResource} from "./resources/settings";
 import {TorrentResource} from "./resources/torrent";
 import {UserResource} from "./resources/user";
+import {TagResource} from "./resources/tag";
 
 const LOCAL_STORAGE_TOKEN_KEY = "torrust_token";
 
@@ -12,6 +13,7 @@ export class Rest {
     public settings: SettingsResource;
     public torrent: TorrentResource;
     public user: UserResource;
+    public tag: TagResource;
 
     constructor(apiBaseUrl: string) {
         this.apiBaseUrl = apiBaseUrl;
@@ -22,6 +24,7 @@ export class Rest {
         this.settings = new SettingsResource(this);
         this.torrent = new TorrentResource(this);
         this.user = new UserResource(this);
+        this.tag = new TagResource(this);
     }
 
     public getToken() {
