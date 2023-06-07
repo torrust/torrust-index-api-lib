@@ -43,7 +43,7 @@ export class UserResource implements IRestResource {
                 return Promise.resolve(res.data);
             })
             .catch((err) => {
-                return Promise.reject(err);
+                return Promise.reject(err.response?.data?.error ?? err);
             });
     }
 
@@ -57,7 +57,7 @@ export class UserResource implements IRestResource {
                 return Promise.resolve(true);
             })
             .catch((err) => {
-                return Promise.reject(err);
+                return Promise.reject(err.response?.data?.error ?? err);
             });
     }
 
@@ -74,8 +74,7 @@ export class UserResource implements IRestResource {
                 return Promise.resolve(res.data);
             })
             .catch((err) => {
-                console.error(err);
-                return Promise.reject(err);
+                return Promise.reject(err.response?.data?.error ?? err);
             });
     }
 }

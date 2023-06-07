@@ -30,7 +30,7 @@ export class CategoryResource implements IRestResource {
                 return Promise.resolve(res.data);
             })
             .catch((err) => {
-                return Promise.reject(err);
+                return Promise.reject(err.response?.data?.error ?? err);
             });
     }
 
@@ -47,7 +47,7 @@ export class CategoryResource implements IRestResource {
                 return Promise.resolve(res.data);
             })
             .catch((err) => {
-                return Promise.reject(err);
+                return Promise.reject(err.response?.data?.error ?? err);
             });
     }
 
@@ -64,7 +64,7 @@ export class CategoryResource implements IRestResource {
                 return Promise.resolve(res.data);
             })
             .catch((err) => {
-                return Promise.reject(err);
+                return Promise.reject(err.response?.data?.error ?? err);
             });
     }
 }
