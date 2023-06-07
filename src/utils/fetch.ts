@@ -3,7 +3,9 @@ export async function request(path: string, config: RequestInit): Promise<Respon
     const response = await fetch(request);
 
     if(!response.ok) {
-        throw new Error(response.statusText);
+        const res = await response.json();
+
+        throw new Error(res?.error ?? response.statusText);
     }
 
     return response;
