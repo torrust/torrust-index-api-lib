@@ -20,6 +20,6 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "torrust-index-types-lib": "^0.1.3"
+    "torrust-index-types-lib": "^0.2.0"
   }
 }
