@@ -1,7 +1,7 @@
 import {Rest} from "../rest";
 import {IRestResource} from "../restResource";
 import {fetchPost} from "../../../utils/fetch";
-import {User} from "torrust-index-types-lib";
+import {TokenResponse} from "torrust-index-types-lib";
 
 type LoginUserParams = {
     login: string
@@ -9,7 +9,7 @@ type LoginUserParams = {
 }
 
 type LoginUserResponse = {
-    data: User
+    data: TokenResponse
 }
 
 type RegisterUserParams = {
@@ -30,7 +30,7 @@ export class UserResource implements IRestResource {
         this.client = client;
     }
 
-    async loginUser(params: LoginUserParams): Promise<User> {
+    async loginUser(params: LoginUserParams): Promise<TokenResponse> {
         return await fetchPost<LoginUserResponse>(
             `${this.client.apiBaseUrl}/user/login`,
             JSON.stringify(params),
@@ -61,7 +61,7 @@ export class UserResource implements IRestResource {
             });
     }
 
-    async renewToken(): Promise<User> {
+    async renewToken(): Promise<TokenResponse> {
         return await fetchPost<LoginUserResponse>(
             `${this.client.apiBaseUrl}/user/token/renew`,
             JSON.stringify({ token: this.client.authToken ?? "" }),

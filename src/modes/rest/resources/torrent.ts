@@ -1,10 +1,10 @@
-import {Torrent, TorrentTag, TorrentCompact} from "torrust-index-types-lib";
+import {TorrentResponse, TorrentTag, TorrentListing} from "torrust-index-types-lib";
 import {Rest} from "../rest";
 import {IRestResource} from "../restResource";
 import {fetchDelete, fetchGet, fetchGetBlob, fetchPost, fetchPut} from "../../../utils/fetch";
 
 type GetTorrentResponse = {
-    data: Torrent
+    data: TorrentResponse
 }
 
 type GetTorrentsParams = {
@@ -22,7 +22,7 @@ type GetTorrentsResponse = {
 
 type GetTorrentsResponseData = {
     total: number
-    results: Array<TorrentCompact>
+    results: Array<TorrentListing>
 }
 
 type DeleteTorrentResponse = {
@@ -38,7 +38,7 @@ type UpdateTorrentParams = {
 }
 
 type UpdateTorrentResponse = {
-    data: Torrent
+    data: TorrentResponse
 }
 
 type UploadTorrentParams = {
@@ -64,7 +64,7 @@ export class TorrentResource implements IRestResource {
         this.client = client;
     }
 
-    async getTorrent(infoHash: string): Promise<Torrent> {
+    async getTorrent(infoHash: string): Promise<TorrentResponse> {
         return await fetchGet<GetTorrentResponse>(
             `${this.client.apiBaseUrl}/torrent/${infoHash}`
         )
@@ -102,7 +102,7 @@ export class TorrentResource implements IRestResource {
             });
     }
 
-    async updateTorrent(infoHash: string, params: UpdateTorrentParams): Promise<Torrent> {
+    async updateTorrent(infoHash: string, params: UpdateTorrentParams): Promise<TorrentResponse> {
         return await fetchPut<UpdateTorrentParams, UpdateTorrentResponse>(
             `${this.client.apiBaseUrl}/torrent/${infoHash}`,
             params,

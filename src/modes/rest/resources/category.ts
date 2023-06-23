@@ -1,10 +1,10 @@
-import {TorrentCategory} from "torrust-index-types-lib";
+import {Category} from "torrust-index-types-lib";
 import {IRestResource} from "../restResource";
 import {Rest} from "../rest";
 import {fetchDelete, fetchGet, fetchPost} from "../../../utils/fetch";
 
 type GetCategoriesResponse = {
-    data: Array<TorrentCategory>
+    data: Array<Category>
 }
 
 type CategoryResponse = {
@@ -22,7 +22,7 @@ export class CategoryResource implements IRestResource {
         this.client = client;
     }
 
-    async getCategories(): Promise<Array<TorrentCategory>> {
+    async getCategories(): Promise<Array<Category>> {
         return await fetchGet<GetCategoriesResponse>(
             `${this.client.apiBaseUrl}/category`
         )
