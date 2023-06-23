@@ -7,12 +7,16 @@ type GetCategoriesResponse = {
     data: Array<Category>
 }
 
-type CategoryResponse = {
-    data: string
+type AddedCategoryResponse = {
+    data: string // name
 }
 
 type DeleteCategoryParams = {
     name: string
+}
+
+type DeletedCategoryResponse = {
+    data: string // name
 }
 
 export class CategoryResource implements IRestResource {
@@ -35,7 +39,7 @@ export class CategoryResource implements IRestResource {
     }
 
     async addCategory(name: string): Promise<string> {
-        return await fetchPost<CategoryResponse>(
+        return await fetchPost<AddedCategoryResponse>(
             `${this.client.apiBaseUrl}/category`,
             JSON.stringify({ name }),
             {
@@ -52,7 +56,7 @@ export class CategoryResource implements IRestResource {
     }
 
     async deleteCategory(name: string): Promise<string> {
-        return await fetchDelete<DeleteCategoryParams, CategoryResponse>(
+        return await fetchDelete<DeleteCategoryParams, DeletedCategoryResponse>(
             `${this.client.apiBaseUrl}/category`,
             { name },
             {

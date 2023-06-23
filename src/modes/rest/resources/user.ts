@@ -12,6 +12,10 @@ type LoginUserResponse = {
     data: TokenResponse
 }
 
+type RenewedTokenResponse = {
+    data: TokenResponse
+}
+
 type RegisterUserParams = {
     username: string
     email: string
@@ -24,9 +28,11 @@ type Token = {
 }
 
 type AddedUserResponse = {
-    data: {
-        user_id: number
-    }
+    data: NewUser
+}
+
+type NewUser = {
+    user_id: number
 }
 
 export class UserResource implements IRestResource {
@@ -68,7 +74,7 @@ export class UserResource implements IRestResource {
     }
 
     async renewToken(): Promise<TokenResponse> {
-        return await fetchPost<LoginUserResponse>(
+        return await fetchPost<RenewedTokenResponse>(
             `${this.client.apiBaseUrl}/user/token/renew`,
             JSON.stringify({ token: this.client.authToken ?? "" }),
             { "Content-Type": "application/json"}

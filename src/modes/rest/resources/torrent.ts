@@ -26,8 +26,13 @@ type GetTorrentsResponseData = {
 }
 
 type DeleteTorrentResponse = {
+    data: DeleteTorrentResponseData
+}
+
+type DeleteTorrentResponseData = {
     data: {
         torrent_id: number
+        info_hash: string
     }
 }
 
@@ -49,12 +54,13 @@ type UploadTorrentParams = {
     file: any
 }
 
-type UploadTorrentResponse = {
-    data: UploadTorrentResponseData
+type NewTorrentResponse = {
+    data: NewTorrentResponseData
 }
 
-type UploadTorrentResponseData = {
+type NewTorrentResponseData = {
     torrent_id: number
+    info_hash: string
 }
 
 export class TorrentResource implements IRestResource {
@@ -64,7 +70,7 @@ export class TorrentResource implements IRestResource {
         this.client = client;
     }
 
-    async getTorrent(infoHash: string): Promise<TorrentResponse> {
+    async getTorrentInfo(infoHash: string): Promise<TorrentResponse> {
         return await fetchGet<GetTorrentResponse>(
             `${this.client.apiBaseUrl}/torrent/${infoHash}`
         )
@@ -88,14 +94,14 @@ export class TorrentResource implements IRestResource {
             });
     }
 
-    async deleteTorrent(infoHash: string): Promise<boolean> {
+    async deleteTorrent(infoHash: string): Promise<DeleteTorrentResponseData> {
         return await fetchDelete<any, DeleteTorrentResponse>(
             `${this.client.apiBaseUrl}/torrent/${infoHash}`,
             {},
             { "Authorization": `Bearer ${this.client.authToken}` }
         )
-            .then((_res) => {
-                return Promise.resolve(true);
+            .then((res) => {
+                return Promise.resolve(res.data);
             })
             .catch((err) => {
                 return Promise.reject(err.response?.data?.error ?? err);
@@ -116,7 +122,7 @@ export class TorrentResource implements IRestResource {
             });
     }
 
-    async uploadTorrent(params: UploadTorrentParams): Promise<number> {
+    async uploadTorrent(params: UploadTorrentParams): Promise<NewTorrentResponseData> {
         const formData = new FormData();
 
         formData.append("title", params.title);
@@ -125,20 +131,20 @@ export class TorrentResource implements IRestResource {
         formData.append("tags", JSON.stringify(params.tags));
         formData.append("torrent", params.file);
 
-        return await fetchPost<UploadTorrentResponse>(
+        return await fetchPost<NewTorrentResponse>(
             `${this.client.apiBaseUrl}/torrent/upload`,
             formData,
             { "Authorization": `Bearer ${this.client.authToken}` }
         )
             .then((res) => {
-                return Promise.resolve(res.data.torrent_id);
+                return Promise.resolve(res.data);
             })
             .catch((err) => {
                 return Promise.reject(err.response?.data?.error ?? err);
             });
     }
 
-    async downloadTorrent(infoHash: number): Promise<Blob> {
+    async downloadTorrent(infoHash: string): Promise<Blob> {
         return await fetchGetBlob(
             `${this.client.apiBaseUrl}/torrent/download/${infoHash}`
         )

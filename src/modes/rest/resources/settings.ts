@@ -1,7 +1,7 @@
 import {PublicSettings, Settings} from "torrust-index-types-lib";
 import {IRestResource} from "../restResource";
 import {Rest} from "../rest";
-import {fetchGet, fetchPost} from "../../../utils/fetch";
+import {fetchGet} from "../../../utils/fetch";
 
 type GetSettingsResponse = {
     data: Settings
@@ -22,20 +22,6 @@ export class SettingsResource implements IRestResource {
         return await fetchGet<GetSettingsResponse>(
             `${this.client.apiBaseUrl}/settings`,
             { "Authorization": `Bearer ${this.client.authToken}` }
-        )
-            .then((res) => {
-                return Promise.resolve(res.data);
-            })
-            .catch((err) => {
-                return Promise.reject(err.response?.data?.error ?? err);
-            });
-    }
-
-    public async updateSettings(settings: Settings): Promise<Settings> {
-        return await fetchPost<GetSettingsResponse>(
-            `${this.client.apiBaseUrl}/settings`,
-            JSON.stringify(settings),
-            { "Authorization": `Bearer ${this.client.authToken}`, "Content-Type": "application/json" }
         )
             .then((res) => {
                 return Promise.resolve(res.data);
