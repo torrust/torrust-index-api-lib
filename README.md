@@ -1,5 +1,7 @@
 # Torrust Index Application Interface
 
+[![Test](https://github.com/torrust/torrust-index-api-lib/actions/workflows/test.yml/badge.svg)](https://github.com/torrust/torrust-index-api-lib/actions/workflows/test.yml)
+
 A simple TypeScript/ES6 library that contains API calls used by the [Torrust Index](https://github.com/torrust/torrust-index) project.
 
 * [Torrust Index Backend](https://github.com/torrust/torrust-index-backend) is our reference implementation of this interface.
