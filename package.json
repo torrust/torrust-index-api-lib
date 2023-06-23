@@ -3,7 +3,7 @@
   "version": "0.1.15",
   "description": "Contains API functions for the Torrust project.",
   "repository": "https://github.com/torrust/torrust-index-types-lib",
-  "license": "MIT",
+  "license": "SEE LICENSE IN COPYRIGHT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {

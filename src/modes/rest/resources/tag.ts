@@ -1,6 +1,6 @@
 import {IRestResource} from "../restResource";
 import {Rest} from "../rest";
-import {TorrentTag} from "../../../../../torrust-index-types-lib";
+import {TorrentTag} from "torrust-index-types-lib";
 import {fetchDelete, fetchGet, fetchPost} from "../../../utils/fetch";
 
 type TagResponse = {
