@@ -23,6 +23,12 @@ type Token = {
     token: string
 }
 
+type AddedUserResponse = {
+    data: {
+        user_id: number
+    }
+}
+
 export class UserResource implements IRestResource {
     client: Rest;
 
@@ -48,7 +54,7 @@ export class UserResource implements IRestResource {
     }
 
     async registerUser(params: RegisterUserParams): Promise<boolean> {
-        return await fetchPost<any>(
+        return await fetchPost<AddedUserResponse>(
             `${this.client.apiBaseUrl}/user/register`,
             JSON.stringify(params),
             { "Content-Type": "application/json" }

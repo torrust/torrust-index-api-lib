@@ -7,12 +7,20 @@ type TagResponse = {
     data: TorrentTag
 }
 
-type DeleteTagPrams = {
+type DeleteTagParams = {
     tag_id: number
+}
+
+type AddTagResponse = {
+    data: string // tag name
 }
 
 type GetTagsResponse = {
     data: Array<TorrentTag>
+}
+
+type DeleteTagResponse = {
+    data: number // tag id
 }
 
 export class TagResource implements IRestResource {
@@ -23,7 +31,7 @@ export class TagResource implements IRestResource {
     }
 
     async addTag(name: string): Promise<string> {
-        return await fetchPost<any>(
+        return await fetchPost<AddTagResponse>(
             `${this.client.apiBaseUrl}/tag`,
             JSON.stringify({ name }),
             {
@@ -40,7 +48,7 @@ export class TagResource implements IRestResource {
     }
 
     async deleteTag(id: number): Promise<number> {
-        return await fetchDelete<DeleteTagPrams, any>(
+        return await fetchDelete<DeleteTagParams, DeleteTagResponse>(
             `${this.client.apiBaseUrl}/tag`,
             { tag_id: id },
             {
