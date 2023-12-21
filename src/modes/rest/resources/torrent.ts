@@ -70,9 +70,14 @@ export class TorrentResource implements IRestResource {
         this.client = client;
     }
 
+    headers(): HeadersInit | undefined {
+        return this.client.authToken ? { "Authorization": `Bearer ${this.client.authToken}` } : undefined;
+    }
+
     async getTorrentInfo(infoHash: string): Promise<TorrentResponse> {
         return await fetchGet<GetTorrentResponse>(
-            `${this.client.apiBaseUrl}/torrent/${infoHash}`
+            `${this.client.apiBaseUrl}/torrent/${infoHash}`,
+            this.headers()
         )
             .then((res) => {
                 return Promise.resolve(res.data);
@@ -84,7 +89,8 @@ export class TorrentResource implements IRestResource {
 
     async getTorrents(params: GetTorrentsParams): Promise<GetTorrentsResponseData> {
         return await fetchGet<GetTorrentsResponse>(
-            `${this.client.apiBaseUrl}/torrents?page_size=${params.pageSize}&page=${params.page - 1}&sort=${params.sorting}${ params.categories ? "&categories=" + params.categories.join(",") : ""}${ params.tags ? "&tags=" + params.tags.join(",") : ""}${params.searchQuery ? "&search=" + params.searchQuery : ""}`
+            `${this.client.apiBaseUrl}/torrents?page_size=${params.pageSize}&page=${params.page - 1}&sort=${params.sorting}${params.categories ? "&categories=" + params.categories.join(",") : ""}${params.tags ? "&tags=" + params.tags.join(",") : ""}${params.searchQuery ? "&search=" + params.searchQuery : ""}`,
+            this.headers()
         )
             .then((res) => {
                 return Promise.resolve(res.data);
@@ -98,7 +104,7 @@ export class TorrentResource implements IRestResource {
         return await fetchDelete<any, DeleteTorrentResponse>(
             `${this.client.apiBaseUrl}/torrent/${infoHash}`,
             {},
-            { "Authorization": `Bearer ${this.client.authToken}` }
+            this.headers()
         )
             .then((res) => {
                 return Promise.resolve(res.data);
@@ -112,7 +118,7 @@ export class TorrentResource implements IRestResource {
         return await fetchPut<UpdateTorrentParams, UpdateTorrentResponse>(
             `${this.client.apiBaseUrl}/torrent/${infoHash}`,
             params,
-            { "Authorization": `Bearer ${this.client.authToken}`, "Content-Type": "application/json" }
+            this.headers()
         )
             .then((res) => {
                 return Promise.resolve(res.data);
@@ -134,7 +140,7 @@ export class TorrentResource implements IRestResource {
         return await fetchPost<NewTorrentResponse>(
             `${this.client.apiBaseUrl}/torrent/upload`,
             formData,
-            { "Authorization": `Bearer ${this.client.authToken}` }
+            this.headers()
         )
             .then((res) => {
                 return Promise.resolve(res.data);
@@ -146,7 +152,8 @@ export class TorrentResource implements IRestResource {
 
     async downloadTorrent(infoHash: string): Promise<Blob> {
         return await fetchGetBlob(
-            `${this.client.apiBaseUrl}/torrent/download/${infoHash}`
+            `${this.client.apiBaseUrl}/torrent/download/${infoHash}`,
+            this.headers()
         )
             .then((blob) => {
                 return Promise.resolve(blob);
@@ -157,11 +164,9 @@ export class TorrentResource implements IRestResource {
     }
 
     async proxiedImage(url: string): Promise<Blob> {
-        const headers = this.client.authToken ? { "Authorization": `Bearer ${this.client.authToken}` } : undefined;
-
         return await fetchGetBlob(
             `${this.client.apiBaseUrl}/proxy/image/${encodeURIComponent(url)}`,
-            headers
+            this.headers()
         )
             .then((blob) => {
                 return Promise.resolve(blob);
