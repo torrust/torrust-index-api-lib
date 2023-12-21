@@ -1,6 +1,6 @@
 {
   "name": "torrust-index-api-lib",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "Contains API functions for the Torrust project.",
   "repository": "https://github.com/torrust/torrust-index-api-lib",
   "license": "SEE LICENSE IN COPYRIGHT",
