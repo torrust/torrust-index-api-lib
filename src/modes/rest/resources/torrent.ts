@@ -60,6 +60,7 @@ type NewTorrentResponse = {
 
 type NewTorrentResponseData = {
     torrent_id: number
+    canonical_info_hash: string
     info_hash: string
 }
 
