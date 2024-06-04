@@ -23,6 +23,12 @@ type RegisterUserParams = {
     confirm_password: string
 }
 
+type ChangePasswordParams = {
+    current_password: string
+    password: string
+    confirm_password: string
+}
+
 type Token = {
     token: string
 }
@@ -84,6 +90,23 @@ export class UserResource implements IRestResource {
                 this.client.setToken(res.data.token);
 
                 return Promise.resolve(res.data);
+            })
+            .catch((err) => {
+                return Promise.reject(err.response?.data?.error ?? err);
+            });
+    }
+
+    async changePassword(params: ChangePasswordParams, username: string): Promise<boolean> {
+        return await fetchPost<void>(
+            `${this.client.apiBaseUrl}/user/${username}/change-password`,
+            JSON.stringify(params),
+            {
+                "Authorization": `Bearer ${this.client.authToken}`,
+                "Content-Type": "application/json"
+            }
+        )
+            .then(() => {
+                return Promise.resolve(true);
             })
             .catch((err) => {
                 return Promise.reject(err.response?.data?.error ?? err);

@@ -51,6 +51,7 @@ type UploadTorrentParams = {
     category: string
     description: string
     tags: Array<number>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     file: any
 }
 
@@ -102,6 +103,7 @@ export class TorrentResource implements IRestResource {
     }
 
     async deleteTorrent(infoHash: string): Promise<DeleteTorrentResponseData> {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return await fetchDelete<any, DeleteTorrentResponse>(
             `${this.client.apiBaseUrl}/torrent/${infoHash}`,
             {},
