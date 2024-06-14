@@ -2,7 +2,10 @@
   "name": "torrust-index-api-lib",
   "version": "3.0.0-alpha.1",
   "description": "Contains API functions for the Torrust project.",
-  "repository": "https://github.com/torrust/torrust-index-api-lib",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torrust/torrust-index-api-lib.git"
+  },
   "license": "SEE LICENSE IN COPYRIGHT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
