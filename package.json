@@ -1,6 +1,6 @@
 {
   "name": "torrust-index-api-lib",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0",
   "description": "Contains API functions for the Torrust project.",
   "repository": {
     "type": "git",
@@ -23,6 +23,6 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "torrust-index-types-lib": "^3.0.0-beta.2"
+    "torrust-index-types-lib": "^3.0.0"
   }
 }
