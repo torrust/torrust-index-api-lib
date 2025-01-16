@@ -1,7 +1,8 @@
 import {Rest} from "../rest";
 import {IRestResource} from "../restResource";
-import {fetchPost} from "../../../utils/fetch";
-import {TokenResponse} from "torrust-index-types-lib";
+import {fetchGet, fetchPost} from "../../../utils/fetch";
+import { TokenResponse, UserProfile } from "torrust-index-types-lib";
+
 
 type LoginUserParams = {
     login: string
@@ -39,6 +40,10 @@ type AddedUserResponse = {
 
 type NewUser = {
     user_id: number
+}
+
+type GetUserProfilesResponse = {
+    data: Array<UserProfile>
 }
 
 export class UserResource implements IRestResource {
@@ -112,4 +117,20 @@ export class UserResource implements IRestResource {
                 return Promise.reject(err.response?.data?.error ?? err);
             });
     }
+    async getUserProfiles(): Promise<Array<UserProfile>> {
+        return await fetchGet<GetUserProfilesResponse>(
+            `${this.client.apiBaseUrl}/users`,
+            {
+                "Authorization": `Bearer ${this.client.authToken}`,
+                "Content-Type": "application/json"
+            }
+        )
+            .then((res) => {
+                return Promise.resolve(res.data);
+            })
+            .catch((err) => {
+                return Promise.reject(err.response?.data?.error ?? err);
+            });
+    }
 }
+
