@@ -42,8 +42,18 @@ type NewUser = {
     user_id: number
 }
 
+type GetUserProfilesParams = {
+    pageSize: number
+    page: number
+}
+
+type GetUserProfilesResponseData = {
+    total: number
+    results: Array<UserProfile>
+}
+
 type GetUserProfilesResponse = {
-    data: Array<UserProfile>
+    data: GetUserProfilesResponseData
 }
 
 export class UserResource implements IRestResource {
@@ -117,9 +127,9 @@ export class UserResource implements IRestResource {
                 return Promise.reject(err.response?.data?.error ?? err);
             });
     }
-    async getUserProfiles(): Promise<Array<UserProfile>> {
+    async getUserProfiles(params: GetUserProfilesParams): Promise<GetUserProfilesResponseData> {
         return await fetchGet<GetUserProfilesResponse>(
-            `${this.client.apiBaseUrl}/users`,
+            `${this.client.apiBaseUrl}/users?page_size=${params.pageSize}&page=${params.page - 1}`,
             {
                 "Authorization": `Bearer ${this.client.authToken}`,
                 "Content-Type": "application/json"
