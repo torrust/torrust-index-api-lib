@@ -45,6 +45,7 @@ type NewUser = {
 type GetUserProfilesParams = {
     pageSize: number
     page: number
+    searchQuery?: string
 }
 
 type GetUserProfilesResponseData = {
@@ -129,7 +130,7 @@ export class UserResource implements IRestResource {
     }
     async getUserProfiles(params: GetUserProfilesParams): Promise<GetUserProfilesResponseData> {
         return await fetchGet<GetUserProfilesResponse>(
-            `${this.client.apiBaseUrl}/users?page_size=${params.pageSize}&page=${params.page - 1}`,
+            `${this.client.apiBaseUrl}/users?page_size=${params.pageSize}&page=${params.page - 1}${params.searchQuery ? "&search=" + params.searchQuery : ""}`,
             {
                 "Authorization": `Bearer ${this.client.authToken}`,
                 "Content-Type": "application/json"
