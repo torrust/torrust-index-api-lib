@@ -45,7 +45,7 @@ type NewUser = {
 type GetUserProfilesParams = {
     pageSize: number
     page: number
-    sorting: string
+    sorting?: string
     filters?: Array<string>
     searchQuery?: string
 }
